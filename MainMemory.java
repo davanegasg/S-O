@@ -7,7 +7,7 @@ public class MainMemory{
     static byte PC = 1;
     static ArrayList<Short> memory = new ArrayList<Short>();
     static short registerA = 0;
-    static short registerB = 0;
+    static short registerB = 0;      
     
     public static void Load(short n){
         memory.add(n);
@@ -16,34 +16,60 @@ public class MainMemory{
     
     public static void Plus(short p1, short p2){
         //Saco el primer número de la posición de la memoria en el registro A
-        registerA = memory.get(p1);
+        registerA = p1;
         //Saco el segundo número de la posición de la memoria en el registro B
         registerB = memory.get(p2);
         //Realizo la suma de ambos números y actualizo el registro A
         registerA = (short)(registerA+registerB);
-        System.out.println("The sum of "+ memory.get(p1)+" + "+ registerB + " is: "+ registerA);
+        System.out.println("The sum of "+ p1+" + "+ registerB + " is: "+ registerA);
         //Limpio el registro
+        memory.add(registerA);
         memory.remove(p2);
-        memory.set(p1, registerA);
     }
     
     public static void Minus(short p1, short p2){
         //Saco el primer número de la posición de la memoria en el registro A
-        registerA = memory.get(p1);
+        registerA = p1;
         //Saco el segundo número de la posición de la memoria en el registro B
         registerB = memory.get(p2);
         //Realizo la resta de ambos números y actualizo el registro A
         registerA = (short)(registerA-registerB);
-        System.out.println("The subtraction of "+ memory.get(p1)+" - "+ registerB + " is: "+ registerA);
+        System.out.println("The subtraction of "+ p1+" - "+ registerB + " is: "+ registerA);
         //Limpio el registro
+        memory.add(registerA);
         memory.remove(p2);
-        memory.set(p1, registerA);
+    }
+
+    public static void Multy(short p1, short p2){
+        //Saco el primer número de la posición de la memoria en el registro A
+        registerA = p1;
+        //Saco el segundo número de la posición de la memoria en el registro B
+        registerB = memory.get(p2);
+        //Realizo la resta de ambos números y actualizo el registro A
+        registerA = (short)(registerA*registerB);
+        System.out.println(p1+" Times "+ registerB + " is: "+ registerA);
+        //Limpio el registro
+        memory.add(registerA);
+        memory.remove(p2);
+    }
+
+    public static void Divide(short p1, short p2){
+        //Saco el primer número de la posición de la memoria en el registro A
+        registerA = p1;
+        //Saco el segundo número de la posición de la memoria en el registro B
+        registerB = memory.get(p2);
+        //Realizo la resta de ambos números y actualizo el registro A
+        registerA = (short)(registerA/registerB);
+        System.out.println(p1+" / "+ registerB + " is: "+ registerA);
+        //Limpio el registro
+        memory.add(registerA);
+        memory.remove(p2);
     }
 
     public static void Instruction(String n1){
         Scanner sc = new Scanner(System.in);
         switch(n1){
-            case "LOAD":
+            case "LOAD": //Recibimos el paquete y lo almacenamos donde tengamos libre
                 System.out.println("Put a number to save it. ");
                 short n2 = sc.nextShort();
                 Load(n2);
@@ -51,7 +77,7 @@ public class MainMemory{
                 System.out.println("PC: " + PC);
                 break;
             case "ADD":
-                System.out.println("Put the first position on memory");
+                System.out.println("Put a number to add");
                 short n3 = sc.nextShort();
                 System.out.println("Put the second position on memory");
                 short n4 = sc.nextShort();
@@ -61,11 +87,35 @@ public class MainMemory{
                 break;
 
             case "SUB":
-                System.out.println("Put the first position on memory");
+                System.out.println("Put a number to sub");
                 short n5 = sc.nextShort();
                 System.out.println("Put the second position on memory");
                 short n6 = sc.nextShort();
                 Minus(n5, n6);
+                PC++;
+                System.out.println("PC: " + PC);
+                break;
+            case "DIV":
+                System.out.println("Put a number to divide");
+                short n9 = sc.nextShort();
+                System.out.println("Put the second position on memory");
+                short n10 = sc.nextShort();
+                short zeroyn = memory.get(n10);
+                if(zeroyn==0){
+                    System.out.println("MATH ERROR");
+                    break;
+                } else {
+                    Divide(n9, n10);
+                    PC++;
+                    System.out.println("PC: " + PC);
+                }
+                break;
+            case "MTY":
+                System.out.println("Put a number to multiply");
+                short n7 = sc.nextShort();
+                System.out.println("Put the second position on memory");
+                short n8 = sc.nextShort();
+                Multy(n7, n8);
                 PC++;
                 System.out.println("PC: " + PC);
                 break;
@@ -89,12 +139,14 @@ public class MainMemory{
         String input = "";
         while(!input.equals("EXIT")){
             System.out.println("Write an Instruction: ");
-            System.out.println("- LOAD");
+            System.out.println("- LDA");
             System.out.println("- ADD");
             System.out.println("- SUB");
+            System.out.println("- MTY");
+            System.out.println("- DIV");
             input = sc.next();
             switch(input){
-                case "LOAD":
+                case "LDA":
                     instructions.offer("LOAD");
                 break;
                 case "ADD":
@@ -102,6 +154,12 @@ public class MainMemory{
                 break;
                 case "SUB":
                     instructions.offer("SUB");
+                break;
+                case "MTY":
+                    instructions.offer("MTY");
+                break;
+                case "DIV":
+                    instructions.offer("DIV");
                 break;
                 default:
                 break;
