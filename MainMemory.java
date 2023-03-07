@@ -70,54 +70,76 @@ public class MainMemory{
         Scanner sc = new Scanner(System.in);
         switch(n1){
             case "LOAD": //Recibimos el paquete y lo almacenamos donde tengamos libre
-                System.out.println("Put a number to save it. ");
-                short n2 = sc.nextShort();
-                Load(n2);
-                PC++;
-                System.out.println("PC: " + PC);
+                try {
+                    System.out.println("Put a number to save it. ");
+                    short n2 = sc.nextShort();
+                    Load(n2);
+                    PC++;
+                    System.out.println("PC: " + PC);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                } 
                 break;
             case "ADD":
-                System.out.println("Put a number to add");
-                short n3 = sc.nextShort();
-                System.out.println("Put the second position on memory");
-                short n4 = sc.nextShort();
-                Plus(n3, n4);
-                PC++;
-                System.out.println("PC: " + PC);
+                try {
+                    System.out.println("Put a number to add");
+                    short n3 = sc.nextShort();
+                    System.out.println("Put the second position on memory");
+                    short n4 = sc.nextShort();
+                    Plus(n3, n4);
+                    PC++;
+                    System.out.println("PC: " + PC);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
 
             case "SUB":
-                System.out.println("Put a number to sub");
-                short n5 = sc.nextShort();
-                System.out.println("Put the second position on memory");
-                short n6 = sc.nextShort();
-                Minus(n5, n6);
-                PC++;
-                System.out.println("PC: " + PC);
-                break;
-            case "DIV":
-                System.out.println("Put a number to divide");
-                short n9 = sc.nextShort();
-                System.out.println("Put the second position on memory");
-                short n10 = sc.nextShort();
-                short zeroyn = memory.get(n10);
-                if(zeroyn==0){
-                    System.out.println("MATH ERROR");
-                    break;
-                } else {
-                    Divide(n9, n10);
+                try {
+                    System.out.println("Put a number to sub");
+                    short n5 = sc.nextShort();
+                    System.out.println("Put the second position on memory");
+                    short n6 = sc.nextShort();
+                    Minus(n5, n6);
                     PC++;
                     System.out.println("PC: " + PC);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
+                
+                break;
+            case "DIV":
+                try {
+                    System.out.println("Put a number to divide");
+                    short n9 = sc.nextShort();
+                    System.out.println("Put the second position on memory");
+                    short n10 = sc.nextShort();
+                    short zeroyn = memory.get(n10);
+                    if(zeroyn==0){
+                        System.out.println("MATH ERROR");
+                        break;
+                    } else {
+                        Divide(n9, n10);
+                        PC++;
+                        System.out.println("PC: " + PC);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                
                 break;
             case "MTY":
-                System.out.println("Put a number to multiply");
-                short n7 = sc.nextShort();
-                System.out.println("Put the second position on memory");
-                short n8 = sc.nextShort();
-                Multy(n7, n8);
-                PC++;
-                System.out.println("PC: " + PC);
+                try {
+                    System.out.println("Put a number to multiply");
+                    short n7 = sc.nextShort();
+                    System.out.println("Put the second position on memory");
+                    short n8 = sc.nextShort();
+                    Multy(n7, n8);
+                    PC++;
+                    System.out.println("PC: " + PC);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
             default:
                 break;
@@ -129,49 +151,54 @@ public class MainMemory{
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         } catch (Exception e) {
             // TODO: handle exception
-            System.out.println();
+            System.out.println(e.getMessage());
         }
     }
 
     public static void main(String[] args){
-        Queue<String> instructions = new LinkedList<>();
-        Scanner sc = new Scanner(System.in);
-        String input = "";
-        while(!input.equals("EXIT")){
-            System.out.println("Write an Instruction: ");
-            System.out.println("- LDA");
-            System.out.println("- ADD");
-            System.out.println("- SUB");
-            System.out.println("- MTY");
-            System.out.println("- DIV");
-            input = sc.next();
-            switch(input){
-                case "LDA":
-                    instructions.offer("LOAD");
-                break;
-                case "ADD":
-                    instructions.offer("ADD");
-                break;
-                case "SUB":
-                    instructions.offer("SUB");
-                break;
-                case "MTY":
-                    instructions.offer("MTY");
-                break;
-                case "DIV":
-                    instructions.offer("DIV");
-                break;
-                default:
-                break;
+        try {
+            Queue<String> instructions = new LinkedList<>();
+            Scanner sc = new Scanner(System.in);
+            String input = "";
+            while(!input.equals("EXIT")){
+                System.out.println("Write an Instruction: ");
+                System.out.println("- LDA");
+                System.out.println("- ADD");
+                System.out.println("- SUB");
+                System.out.println("- MTY");
+                System.out.println("- DIV");
+                input = sc.next();
+                switch(input){
+                    case "LDA":
+                        instructions.offer("LOAD");
+                    break;
+                    case "ADD":
+                        instructions.offer("ADD");
+                    break;
+                    case "SUB":
+                        instructions.offer("SUB");
+                    break;
+                    case "MTY":
+                        instructions.offer("MTY");
+                    break;
+                    case "DIV":
+                        instructions.offer("DIV");
+                    break;
+                    default:
+                    break;
+                }
+                while(!instructions.isEmpty()){
+                    cls();
+                    System.out.println("Memory: " + memory);
+                    System.out.println("Queue: " + instructions);
+                    Instruction(instructions.remove());
+                }
             }
-            while(!instructions.isEmpty()){
-                cls();
-                System.out.println("Memory: " + memory);
-                System.out.println("Queue: " + instructions);
-                Instruction(instructions.remove());
-            }
+            System.out.println("Memory: " + memory);
+            System.out.println("Queue: " + instructions);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-        System.out.println("Memory: " + memory);
-        System.out.println("Queue: " + instructions);
+        
     }
 }
