@@ -17,6 +17,7 @@ public class RoundRobin {
             if (proceso.getDuracion() <= quantum) {
                 // Ejecutar proceso completo
                 System.out.println("Ejecutando proceso " + proceso.getNombre() + " durante " + proceso.getDuracion() + " milisegundos.");
+                System.out.println("Proceso " + proceso.getNombre() + " terminado.\n");
                 try {
                     Thread.sleep(proceso.getDuracion());
                 } catch (InterruptedException e) {
@@ -24,7 +25,7 @@ public class RoundRobin {
                 }
             } else {
                 // Ejecutar proceso parcialmente y agregarlo de nuevo a la cola
-                System.out.println("Ejecutando proceso " + proceso.getNombre() + " durante " + quantum + " milisegundos.");
+                System.out.println("Ejecutando proceso " + proceso.getNombre() + " durante " + quantum + " milisegundos.\n");
                 proceso.reducirDuracion(quantum);
                 cola.add(proceso);
                 try {
