@@ -1,10 +1,12 @@
-public class Proceso {
+class Proceso implements Comparable<Proceso> {
     private String nombre;
     private int duracion;
+    private int prioridad;
 
-    public Proceso(String nombre, int duracion) {
+    public Proceso(String nombre, int duracion, int prioridad) {
         this.nombre = nombre;
         this.duracion = duracion;
+        this.prioridad = prioridad;
     }
 
     public String getNombre() {
@@ -15,7 +17,12 @@ public class Proceso {
         return duracion;
     }
 
-    public void reducirDuracion(int tiempo) {
-        duracion -= tiempo;
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    @Override
+    public int compareTo(Proceso otroProceso) {
+        return Integer.compare(this.prioridad, otroProceso.prioridad);
     }
 }
